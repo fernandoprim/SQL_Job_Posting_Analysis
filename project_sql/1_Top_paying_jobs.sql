@@ -1,4 +1,4 @@
--- What are the top paying jobs looking for a Data Analyst in Brazil?
+-- What are the top paying jobs looking for a Data Analyst?
 
 SELECT
     jpf.job_id,
@@ -13,7 +13,7 @@ FROM
     JOIN company_dim cd ON cd.company_id = jpf.company_id
 WHERE
     job_title_short = 'Data Analyst' AND
-    job_location = 'Brazil' AND
     salary_year_avg IS NOT NULL
 ORDER BY
     salary_year_avg DESC
+LIMIT 10
