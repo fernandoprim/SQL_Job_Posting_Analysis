@@ -1,27 +1,22 @@
-# Introduction
+# Data Analytics Job Postings Case Study
 
-This small PostgreSQL project explores a job posting database to identify:
+🔎 Check all the SQL queries in [HERE](/project_sql/).
 
-- Top-paying jobs & skills based on average annual salaries.
+First of all, it is important to know how many job postings are being researched:
 
-- High-demand skills by analyzing their occurrence in job postings.
+```sql
+SELECT
+    COUNT(*)
+FROM 
+    job_postings_fact
+```
 
-The project utilizes SQL queries to aggregate and analyze data from job postings, linking salaries, skills, and demand.
+<img src="https://github.com/fernandoprim/Assets/blob/main/job_posting_project/Total.png"/>
 
-🔎 You can check the SQL queries in [HERE](/project_sql/).
+Great! We got a total of 787,686 job postings.
+Now into the questions!
 
-# Tools I used
-
-- SQL
-- PostgreSQL
-- VsCode
-- Git & GitHub
-
-# The Analysis
-
-Each query in this project was aimed at investigating specific aspects of the current job market:
-
-### 1. Top Paying Data Analyst Jobs
+## 1. What are the top paying Data Analyst jobs?
 
 ```sql
 SELECT
@@ -43,48 +38,11 @@ ORDER BY
 LIMIT 10
 ```
 
-This query reveals the top 10 highest-paying Data Analyst jobs, highlighting key trends:
+### Outcome:
 
-- Salary Range: Top salaries vary between $375,000 and $650,000, with Mantys offering the highest pay.
+<img src="https://github.com/fernandoprim/Assets/blob/main/job_posting_project/Q1.png"/>
 
-- Job Titles: High salaries are often tied to senior or specialized roles (e.g., Director of Safety Data Analysis).
-
-### 2. Requested skills for top paying jobs
-
-```sql
-WITH top_paying_jobs AS (
-    SELECT
-        jpf.job_id,
-        cd.name AS company_name,
-        jpf.job_title,
-        jpf.job_location,
-        jpf.salary_year_avg
-    FROM
-        job_postings_fact jpf
-        JOIN company_dim cd ON cd.company_id = jpf.company_id
-    WHERE
-        job_title_short = 'Data Analyst' AND
-        salary_year_avg IS NOT NULL
-    ORDER BY
-        salary_year_avg DESC
-)
-
-SELECT
-    tpj.*,
-    sd.skills
-FROM top_paying_jobs tpj
-INNER JOIN skills_job_dim sjd ON tpj.job_id = sjd.job_id
-INNER JOIN skills_dim sd ON sjd.skill_id = sd.skill_id
-ORDER BY
-    salary_year_avg DESC
-```
-This query reveals the most demanded skills for the top paying jobs presented before, as seen on the following graph:
-
-![alt text](Assets/Top_paying_skills.png)
-
-### 3. Top Demanded Skills
-
-The following query brings the most demanded skills for a Data Analyst worldwide.
+## 2. What are the most demanded skills for Data Analysts?
 
 ```sql
 SELECT
@@ -102,21 +60,11 @@ ORDER BY
 LIMIT 5
 ```
 
-| Skills   | Demand Count |
-|----------|--------------|
-| SQL      | 7291         |
-| Excel    | 4611         |
-| Python   | 4330         |
-| Tableau  | 3745         |
-| Power BI | 2609         |
+### Outcome:
 
-- **SQL**, **Excel** and **Python** are still fundamental for a Data Analyst, being the top 3 most requested skills in job postings for this role.
+<img src="https://github.com/fernandoprim/Assets/blob/main/job_posting_project/Q2.png"/>
 
-- Visualization tools like **Power BI** and **Tableau** are also highly requested, being top 4 and 5 respectively.
-
-### 4. Top Paying Skills
-
-This query gets the top skills based on their average salary for Data Analysts.
+## 3. What are the top Paying skills?
 
 ```sql
 SELECT
@@ -135,9 +83,11 @@ ORDER BY
 LIMIT 10
 ```
 
-With this query we area able to find a more diverse result, with Cloud (Terraform, VMware) & A.I. (Couchbase, Datarobot) skills being more present.
+### Outcome:
 
-### 5. Most optimal skills to learn
+<img src="https://github.com/fernandoprim/Assets/blob/main/job_posting_project/Q3.png"/>
+
+## 4. What are the most optimal skills to learn for the area?
 
 The objective with this query is to find what are the skills that have both a high demand and salary inside the Data Analyst job market.
 
@@ -163,15 +113,9 @@ ORDER BY
 LIMIT 25;
 ```
 
-Once again, skills like **SQL** and **Python** are present, appearing in various high-paying job postings.
+### Outcome:
 
-However, the skill with the best average salary is **Airflow**, with 71 postings and an average pay of $116387
-
-# What I learned
-
-Throughout this project, I not only strengthened my existing knowledge but also gained valuable new insights, particularly in advanced aggregation functions and joins.
-
-I was especially pleased to discover that even the most complex problems and queries can be broken down into simpler, more efficient solutions and how I can achieve that.
+<img src="https://github.com/fernandoprim/Assets/blob/main/job_posting_project/Q4.png"/>
 
 # Conclusions
 
